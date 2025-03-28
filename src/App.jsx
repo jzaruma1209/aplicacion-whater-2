@@ -1,14 +1,21 @@
-import { useEffect } from "react";
+import { use, useEffect } from "react";
 import "./App.css";
 import { useState } from "react";
 import axios from "axios";
 import WeatherCard from "./components/WeatherCard";
+
 function App() {
   // https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={API key}
   const [coords, setCoords] = useState(null);
   const [weather, setWeather] = useState(null);
   const [temp, setTemp] = useState();
+  const [isLoading, setIsLoading] = useState(true);
+  const [hasError, setHasError] = useState(false);
+  const [showMessage, setShowMessage] = useState(false);
   useEffect(() => {
+    setTimeout(() => {
+      setShowMessage(true);
+    }, 3000);
     //aqui en vez de axios  usamos el getCurentPosition() porque axios es para peticiones http
     const success = (position) => {
       setCoords({
@@ -17,8 +24,13 @@ function App() {
       });
     };
 
+    const error = () => {
+      setHasError(true);
+      setIsLoading(false);
+    };
+
     //vamos pedir una localizacion
-    navigator.geolocation.getCurrentPosition(success);
+    navigator.geolocation.getCurrentPosition(success, error);
   }, []);
   //useEfect para axios
   useEffect(() => {
@@ -36,14 +48,30 @@ function App() {
           const fahrengeit = ((celsius * 9) / 5 + 32).toFixed(1);
           setTemp({ celsius, fahrengeit });
         })
-        .catch((err) => console.error(err));
+        .catch((err) => console.error(err))
+        .finally(() => {
+          setIsLoading(false);
+        });
     }
   }, [coords]); // hay que visualizar las coors or eso se hace
   console.log(weather);
   return (
-    <div>
-      <h1>Proyecto v2</h1>
-      <WeatherCard weather={weather} temp={temp} />
+    <div className="app flex-container">
+      {isLoading ? (
+        <div>
+          <h1>Loading...</h1>
+          {
+            showMessage && <p>Please activate location</p>
+            /*Corto circuito trabajo */
+          }
+        </div>
+      ) : hasError ? (
+        <h1 className="app-flex-h1">
+          To obtain the weather of your city you must accept the permissions
+        </h1>
+      ) : (
+        <WeatherCard weather={weather} temp={temp} />
+      )}
     </div>
   );
 }

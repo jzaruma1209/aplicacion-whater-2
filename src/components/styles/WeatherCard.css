@@ -1,0 +1,89 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  max-width: 25em;
+  background-color: rgb(0, 0, 0, 0.8);
+  padding: 2em 1.5em;
+  border-radius: 2em;
+  color: white;
+  gap: 1.5rem;
+
+  .card__title {
+    text-align: center;
+    font-weight: 500;
+    font-size: 1.5em;
+  }
+
+  .card__country {
+    font-size: 0.5em;
+    font-weight: 100;
+    text-align: center;
+  }
+
+  .card__body {
+    display: grid;
+    grid-template-columns: 3fr 4fr;
+    align-items: center;
+
+    .card__image {
+      filter: drop-shadow(0px 0px 10px white); /*le da una sombra a la imagen*/
+    }
+  }
+
+  .card_temp {
+    text-align: center;
+    font-weight: 500;
+  }
+
+  .card__btn {
+    font-size: 1em;
+    font-weight: 600;
+    background-color: white;
+    color: black;
+    box-shadow: 0px 0px 10px 1px white; /* Sombra blanca alrededor */
+    padding: 0.6em 1.5em; /* Espaciado interno horizontal y vertical */
+    border-radius: 1em; /* Bordes redondeados */
+    transition: background-color 0.5s, color 0.5s, padding 0.5s; /* Transiciones específicas */
+  }
+
+  .card__btn:hover {
+    color: white; /* Cambia el texto a blanco */
+    background-color: black; /* Fondo negro al pasar el cursor */
+    padding: 0.6em 2em; /* Se amplía el espaciado horizontal */
+  }
+
+  .info {
+    gap: 1em;
+    .info__title {
+      font-size: 1em;
+      text-align: center;
+      font-weight: 500;
+      text-transform: capitalize;
+      &::after,
+      &&::before {
+        content: '"';
+      }
+    }
+    .info__list {
+      gap: 0.5em;
+
+      .info__item {
+        font-size: 0.9em;
+        grid-template-columns: 6fr 3fr;
+
+        .info__label {
+          color: white;
+        }
+        .info__value {
+          font-weight: 500;
+        }
+      }
+    }
+  }
+
+  @media (width > 768px) {
+    & {
+      font-size: 1.2rem;
+    }
+  }
+}
